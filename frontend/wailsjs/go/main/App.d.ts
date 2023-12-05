@@ -3,6 +3,6 @@
 
 export function Greet(arg1:string):Promise<string>;
 
-export function ProcessDir(arg1:string):Promise<Array<string>>;
+export function OpenDirectory(arg1:string):Promise<Array<string>>;
 
 export function ProcessFile():Promise<string>;

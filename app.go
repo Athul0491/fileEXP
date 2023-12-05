@@ -35,7 +35,7 @@ func (a *App) ProcessFile()(string) {
 }
 
 
-func (a *App) openDirectory(path string) ([]string, error){
+func (a *App) OpenDirectory(path string) ([]string, error){
 	var allFiles []string
 	fmt.Printf("Processing directory: %s\n", path)
 

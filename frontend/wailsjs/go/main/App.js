@@ -6,8 +6,8 @@ export function Greet(arg1) {
   return window['go']['main']['App']['Greet'](arg1);
 }
 
-export function ProcessDir(arg1) {
-  return window['go']['main']['App']['ProcessDir'](arg1);
+export function OpenDirectory(arg1) {
+  return window['go']['main']['App']['OpenDirectory'](arg1);
 }
 
 export function ProcessFile() {
