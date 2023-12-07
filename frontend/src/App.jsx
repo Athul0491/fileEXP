@@ -1,44 +1,75 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import { OpenDirectory } from "../wailsjs/go/main/App";
-
+import { GetDisks } from "../wailsjs/go/main/App";
+import { PiArrowUUpLeftBold } from "react-icons/pi";
+// interface Disk {
+//   name: string;
+//   used_gb: number;
+//   total_gb: number;
+// }
 const App = () => {
+  const [disks, setDisks] = useState([]);
+  useEffect(() => {
+    async function getData() {
+      const disks = await GetDisks();
+      setDisks(disks);
+    }
+    getData().catch(console.error);
+  }, []);
+  console.log(disks);
   const [currentDirectory, setCurrentDirectory] = useState("D:/");
+  const [previousDirectory, setPreviousDirectory] = useState("");
   const [directoryContents, setDirectoryContents] = useState(["D:/"]);
-  const updateDirectoryContents = (content) => setDirectoryContents(content);
-  const updateDirectory = (directory) => setCurrentDirectory(directory);
 
-  const showDirectoryContents = (directory) => {
-    OpenDirectory(directory)
-      .then((content) => updateDirectoryContents(content)) // Handle success
-      .catch((error) => {
-        console.error(error); // Handle error
-      });
-    // console.log(directoryContents);
+  const showDirectoryContents = async (directory) => {
+    try {
+      const content = await OpenDirectory(directory);
+      setDirectoryContents(content);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleClick = (dir) => {
-    // setCurrentDirectory(
     console.log("handle click");
     console.log(dir);
-    updateDirectory(dir);
-    // console.log(currentDirectory);
-    showDirectoryContents(currentDirectory);
-    // console.log("ending wala chalray", directoryContents);
-    // console.log(document.getElementsByClassName("directoryContent"));
+    setPreviousDirectory(currentDirectory);
+    setCurrentDirectory(dir);
   };
-  // let render = 0;
-  // useEffect(() => {
-  //   if (render === 0) {
-  //     console.log("useEffect");
-  //     showDirectoryContents(currentDirectory);
-  //   }
-  //   render += 1;
-  // }, []);
+
+  const handleBackClick = () => {
+    if (previousDirectory !== "") {
+      setCurrentDirectory(previousDirectory);
+      setPreviousDirectory(getParentDirectory(previousDirectory));
+    }
+  };
+
+  useEffect(() => {
+    console.log(currentDirectory);
+    showDirectoryContents(currentDirectory);
+  }, [currentDirectory]);
+
+  const getParentDirectory = (filePath) => {
+    const segments = filePath.split("/");
+    segments.pop();
+    const parentDirectory = segments.join("/");
+    return parentDirectory + "/";
+  };
 
   return (
     <div id="App">
-      <div id="directoryContents" className="directoryContents">
+      <div>
+        <PiArrowUUpLeftBold
+          className="backButton"
+          onClick={handleBackClick}
+          size="2em"
+        />
+      </div>
+      <div
+        id="directoryContents"
+        className="directoryContents max-h-100 overflow-y-auto"
+      >
         <h3>
           {directoryContents.length > 0 &&
             directoryContents.map((dir, index) => (

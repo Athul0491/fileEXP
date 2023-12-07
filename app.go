@@ -4,12 +4,20 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"strconv"
 
 	// "encoding/json"
 	"strings"
 )
 
+type Drive struct{
+	name string
+	used_gb int
+	total_gb int
+	letter string
+}
 // App struct
 type App struct {
 	ctx context.Context
@@ -61,4 +69,32 @@ func (a *App) OpenDirectory(path string) ([]string, error){
 	}
 	// fmt.Println(string(jsonData))
 	return allFiles, nil
+}
+
+func (a *App) GetDisks() ([]Drive, error) {
+	cmd := exec.Command("wmic", "logicaldisk", "get", "deviceid,freespace,size")
+	output, err := cmd.Output()
+	if err != nil {
+		return nil, err
+	}
+
+	lines := strings.Split(string(output), "\n")
+	var diskSpaces []Drive
+
+	for _, line := range lines[1:] {
+		fields := strings.Fields(line)
+		if len(fields) == 3 {
+			used_gb ,_ := strconv.Atoi(fields[1])
+			total_gb, _:= strconv.Atoi(fields[2])
+			diskSpace := Drive{
+				name:   fields[0],
+				used_gb:  used_gb,
+				total_gb: total_gb,
+				letter: fields[0][0:1],
+			}
+			diskSpaces = append(diskSpaces, diskSpace)
+		}
+	}
+
+	return diskSpaces, nil
 }
