@@ -57,19 +57,16 @@ function App() {
   } else {
     return (
       <>
-        {directoryContents.map((content, idx) => {
-          // console.log(content, "content");
-          const fileType = content.match("[?:[a-zA-Z0-9-_.]+(?:.txt|.sql)")
+        {directoryContents.map((fullPath, idx) => {
+          const fileType = fullPath.match("[?:[a-zA-Z0-9-_.]+(?:.txt|.sql)")
             ? "File"
             : "Directory";
-          content = splitPath(content);
-          // console.log(fileType, "fileType");
-          // console.log(drive, dir, fileName, "fileName");
-          // console.log(typeof content, "type");
+          const content = splitPath(fullPath);
+
           if (fileType === "Directory") {
             return (
               <Directory
-                onClick={() => onDirectoryClick(content.fileName)}
+                onClick={() => onDirectoryClick(fullPath)}
                 key={idx}
                 name={content.fileName}
               />
