@@ -1,7 +1,7 @@
 export default function File({ name }) {
   return (
     <>
-      {name}
+      file: {name}
       <br />
     </>
   );

@@ -58,10 +58,8 @@ function App() {
     return (
       <>
         {directoryContents.map((fullPath, idx) => {
-          const fileType = fullPath.match("[?:[a-zA-Z0-9-_.]+(?:.txt|.sql)")
-            ? "File"
-            : "Directory";
           const content = splitPath(fullPath);
+          const fileType = fullPath.includes(".") ? "File" : "Directory";
 
           if (fileType === "Directory") {
             return (
