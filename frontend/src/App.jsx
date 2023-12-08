@@ -17,7 +17,11 @@ function App() {
     const directoryContents = await OpenDirectory(letter + ":/");
     setDirectoryContents(directoryContents);
   }
-
+  async function onDirectoryClick(name) {
+    setCurrentPath(name + "/");
+    const directoryContents = await OpenDirectory(currentPath);
+    setDirectoryContents(directoryContents);
+  }
   async function getData() {
     const disks = await GetDisks();
     setDisks(disks);
@@ -63,7 +67,13 @@ function App() {
           // console.log(drive, dir, fileName, "fileName");
           // console.log(typeof content, "type");
           if (fileType === "Directory") {
-            return <Directory key={idx} name={content.fileName} />;
+            return (
+              <Directory
+                onClick={() => onDirectoryClick(content.fileName)}
+                key={idx}
+                name={content.fileName}
+              />
+            );
           } else {
             return <File key={idx} name={content.fileName} />;
           }
