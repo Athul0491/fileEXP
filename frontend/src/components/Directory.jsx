@@ -1,8 +1,3 @@
-export default function Directory({ name }) {
-  return (
-    <>
-      Directory: {name}
-      <br />
-    </>
-  );
+export default function Directory({ name, onClick }) {
+  return <button onClick={onClick}>Directory: {name}</button>;
 }
