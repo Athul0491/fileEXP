@@ -85,14 +85,8 @@ func (a *App) GetDisks() ([]map[string]interface{}, error) {
 	for _, line := range lines[1:] {
 		fields := strings.Fields(line)
 		if len(fields) == 3 {
-			used_gb, _ := strconv.Atoi(fields[1])
-			total_gb, _:= strconv.Atoi(fields[2])
-			// diskSpace := Drive{
-			// 	name:   fields[0],
-			// 	used_gb:  used_gb,
-			// 	total_gb: total_gb,
-			// 	// letter: fields[0][0:1],
-			// }
+			used_gb, _ := strconv.ParseFloat(fields[1],64)
+			total_gb, _:= strconv.ParseFloat(fields[2],64)
 			diskSpace := map[string]interface{}{
 				"name": fields[0], 
 				"used_gb": util.BytesToGB(used_gb),
@@ -103,6 +97,5 @@ func (a *App) GetDisks() ([]map[string]interface{}, error) {
 			
 		}
 	}
-	fmt.Println(diskSpaces)
 	return diskSpaces, nil
 }
