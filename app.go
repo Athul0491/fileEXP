@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"exPL/util"
 	"fmt"
 	"os"
 	"os/exec"
@@ -92,7 +93,12 @@ func (a *App) GetDisks() ([]map[string]interface{}, error) {
 			// 	total_gb: total_gb,
 			// 	// letter: fields[0][0:1],
 			// }
-			diskSpace := map[string]interface{}{"name": fields[0], "used_gb": used_gb,"total_gb":total_gb,"letter":fields[0][0:1]}
+			diskSpace := map[string]interface{}{
+				"name": fields[0], 
+				"used_gb": util.BytesToGB(used_gb),
+				"total_gb":util.BytesToGB(total_gb),
+				"letter":fields[0][0:1],
+			}
 			diskSpaces = append(diskSpaces, diskSpace)
 			
 		}
