@@ -2,29 +2,59 @@ import { useState, useEffect } from "react";
 import { GetDisks } from "../../frontend/wailsjs/go/main/App.js";
 import { OpenDirectory } from "../../frontend/wailsjs/go/main/App.js";
 import DiskComponent from "./components/DiskComponent.jsx";
-import Directory from "./components/Directory.jsx";
-import File from "./components/File.jsx";
-import fs from "fs";
+// import Directory from "./components/Directory.jsx";
+// import File from "./components/File.jsx";
+import DirectoryEntity from "./components/DirectoryEntity";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 function App() {
   const [disks, setDisks] = useState([{}]);
-  const [currentPath, setCurrentPath] = useState("");
   const [directoryContents, setDirectoryContents] = useState([]);
+  const [pathHistory, setPathHistory] = useState([""]);
+  const [historyPlace, setHistoryPlace] = useState(0);
+
   async function onDiskClick(letter) {
-    // console.log(letter);
-    setCurrentPath(letter + ":/");
-    // console.log(currentPath);
-    const directoryContents = await OpenDirectory(letter + ":/");
+    const path = letter + ":/";
+    if (pathHistory[pathHistory.length - 1] != path) {
+      pathHistory.push(path);
+    }
+    setHistoryPlace(pathHistory.length - 1);
+
+    const directoryContents = await OpenDirectory(path);
     setDirectoryContents(directoryContents);
   }
+
   async function onDirectoryClick(name) {
-    setCurrentPath(name + "/");
-    const directoryContents = await OpenDirectory(currentPath);
+    const currentPath = pathHistory[pathHistory.length - 1];
+    const newPath = currentPath + name + "/";
+
+    pathHistory.push(newPath);
+    setHistoryPlace(pathHistory.length - 1);
+
+    const directoryContents = await OpenDirectory(pathHistory[historyPlace]);
     setDirectoryContents(directoryContents);
   }
+
   async function getData() {
     const disks = await GetDisks();
     setDisks(disks);
+  }
+
+  function canGoForward() {
+    return historyPlace < pathHistory.length - 1;
+  }
+
+  function canGoBackward() {
+    return historyPlace > 0;
+  }
+
+  function onBackArrowClick() {
+    pathHistory.push(pathHistory[historyPlace - 1]);
+    setHistoryPlace(historyPlace - 1);
+  }
+
+  function onForwardArrowClick() {
+    setHistoryPlace(historyPlace + 1);
   }
 
   function splitPath(path) {
@@ -41,41 +71,76 @@ function App() {
   }, []);
 
   // console.log(directoryContents);
+  async function updateCurrentDirectory() {
+    console.log(pathHistory);
+    if (pathHistory[historyPlace] == "") {
+      return getData();
+    }
 
-  if (currentPath.length == 0) {
-    return (
-      <div className="flex space-x-2 p-4">
-        {disks.map((disk, idx) => (
-          <DiskComponent
-            onClick={() => onDiskClick(disk.letter)}
-            disk={disk}
-            key={idx}
-          />
-        ))}
+    const directoryContents = await OpenDirectory(pathHistory[historyPlace]);
+    setDirectoryContents(directoryContents);
+  }
+
+  useEffect(() => {
+    updateCurrentDirectory();
+  }, [historyPlace]);
+
+  return (
+    <div className="p-4">
+      <div className="mb-5">
+        <div className="space-x-4">
+          <button onClick={onBackArrowClick} disabled={!canGoBackward()}>
+            <FaArrowLeft
+              size={48}
+              className={canGoBackward() ? undefined : "text-gray-600"}
+            />
+          </button>
+
+          <button onClick={onForwardArrowClick} disabled={!canGoForward()}>
+            <FaArrowRight
+              size={48}
+              className={canGoForward() ? undefined : "text-gray-600"}
+            />
+          </button>
+        </div>
       </div>
-    );
-  } else {
-    return (
-      <>
-        {directoryContents.map((fullPath, idx) => {
-          const content = splitPath(fullPath);
-          const fileType = fullPath.includes(".") ? "File" : "Directory";
 
-          if (fileType === "Directory") {
+      {pathHistory[historyPlace] === "" ? (
+        <div className="space-x-4">
+          {disks.map((disk, idx) => (
+            <DiskComponent
+              onClick={() => onDiskClick(disk.letter)}
+              disk={disk}
+              key={idx}
+            />
+          ))}
+        </div>
+      ) : (
+        <>
+          {directoryContents.length === 0
+            ? "There are no files in this directory."
+            : ""}
+
+          {directoryContents.map((fullPath, idx) => {
+            const content = splitPath(fullPath);
+            const fileType = fullPath.includes(".") ? "File" : "Directory";
             return (
-              <Directory
-                onClick={() => onDirectoryClick(fullPath)}
+              <DirectoryEntity
+                type={fileType === "Directory" ? "directory" : "file"}
+                onClick={() =>
+                  fileType === "Directory"
+                    ? onDirectoryClick(content.fileName)
+                    : undefined
+                }
                 key={idx}
                 name={content.fileName}
               />
             );
-          } else {
-            return <File key={idx} name={content.fileName} />;
-          }
-        })}
-      </>
-    );
-  }
+          })}
+        </>
+      )}
+    </div>
+  );
 }
 
 export default App;

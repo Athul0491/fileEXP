@@ -2,7 +2,7 @@ export default function DiskComponent({ disk, onClick }) {
   return (
     <button
       onClick={onClick}
-      className="p-5 w-56 bg-gray-300 radius rounded cursor-pointer"
+      className="p-5 w-56 bg-darker radius rounded cursor-pointer"
     >
       <h3>
         {disk.name} ({disk.letter})
