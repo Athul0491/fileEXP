@@ -4,12 +4,27 @@ import { OpenDirectory } from "../../frontend/wailsjs/go/main/App.js";
 import DiskList from "./components/Disks/DiskList.jsx";
 import { DirectoryContents } from "./components/DirectoryContents.jsx";
 import FolderNavigation from "./components/FolderNavigation.jsx";
+import useNavigation from "./hooks/useNavigation";
 
 function App() {
   const [disks, setDisks] = useState([{}]);
   const [directoryContents, setDirectoryContents] = useState([]);
-  const [pathHistory, setPathHistory] = useState([""]);
-  const [historyPlace, setHistoryPlace] = useState(0);
+
+  const {
+    pathHistory,
+    setPathHistory,
+    historyPlace,
+    setHistoryPlace,
+    onBackArrowClick,
+    onForwardArrowClick,
+    canGoBackward,
+    canGoForward,
+  } = useNavigation();
+
+  async function updateDirectoryContents() {
+    const contents = await OpenDirectory(pathHistory[historyPlace]);
+    setDirectoryContents(contents);
+  }
 
   async function onDiskClick(letter) {
     const path = letter + ":/";
@@ -18,8 +33,9 @@ function App() {
     }
     setHistoryPlace(pathHistory.length - 1);
 
-    const directoryContents = await OpenDirectory(path);
-    setDirectoryContents(directoryContents);
+    // const directoryContents = await OpenDirectory(path);
+    // setDirectoryContents(directoryContents);
+    updateDirectoryContents();
   }
 
   async function onDirectoryClick(name) {
@@ -33,45 +49,27 @@ function App() {
     setDirectoryContents(directoryContents);
   }
 
-  async function getData() {
+  async function getDisks() {
     const disks = await GetDisks();
     setDisks(disks);
   }
 
-  function canGoForward() {
-    return historyPlace < pathHistory.length - 1;
-  }
-
-  function canGoBackward() {
-    return historyPlace > 0;
-  }
-
-  function onBackArrowClick() {
-    pathHistory.push(pathHistory[historyPlace - 1]);
-    setHistoryPlace(historyPlace - 1);
-  }
-
-  function onForwardArrowClick() {
-    setHistoryPlace(historyPlace + 1);
-  }
-
   useEffect(() => {
-    getData().catch(console.error);
-  }, []);
+    if (pathHistory[historyPlace] == "") {
+      getDisks().catch(console.error);
+      return;
+    }
+    updateCurrentDirectory();
+  }, [historyPlace]);
 
   async function updateCurrentDirectory() {
     console.log(pathHistory);
     if (pathHistory[historyPlace] == "") {
-      return getData();
+      return getDisks();
     }
 
-    const directoryContents = await OpenDirectory(pathHistory[historyPlace]);
-    setDirectoryContents(directoryContents);
+    await updateDirectoryContents();
   }
-
-  useEffect(() => {
-    updateCurrentDirectory();
-  }, [historyPlace]);
 
   return (
     <div className="p-4">
