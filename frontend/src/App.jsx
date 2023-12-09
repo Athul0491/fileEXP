@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
 import { GetDisks } from "../../frontend/wailsjs/go/main/App.js";
 import { OpenDirectory } from "../../frontend/wailsjs/go/main/App.js";
-import DiskComponent from "./components/DiskComponent.jsx";
-// import Directory from "./components/Directory.jsx";
-// import File from "./components/File.jsx";
-import DirectoryEntity from "./components/DirectoryEntity";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import DiskList from "./components/Disks/DiskList.jsx";
+import { DirectoryContents } from "./components/DirectoryContents.jsx";
+import FolderNavigation from "./components/FolderNavigation.jsx";
 
 function App() {
   const [disks, setDisks] = useState([{}]);
@@ -57,20 +55,10 @@ function App() {
     setHistoryPlace(historyPlace + 1);
   }
 
-  function splitPath(path) {
-    const parts = path.split("/");
-    const drive = parts[0];
-    const dir = parts.slice(1, -1).join("/");
-    const fileName = parts[parts.length - 1];
-
-    return { drive, dir, fileName };
-  }
-
   useEffect(() => {
     getData().catch(console.error);
   }, []);
 
-  // console.log(directoryContents);
   async function updateCurrentDirectory() {
     console.log(pathHistory);
     if (pathHistory[historyPlace] == "") {
@@ -87,57 +75,20 @@ function App() {
 
   return (
     <div className="p-4">
-      <div className="mb-5">
-        <div className="space-x-4">
-          <button onClick={onBackArrowClick} disabled={!canGoBackward()}>
-            <FaArrowLeft
-              size={48}
-              className={canGoBackward() ? undefined : "text-gray-600"}
-            />
-          </button>
-
-          <button onClick={onForwardArrowClick} disabled={!canGoForward()}>
-            <FaArrowRight
-              size={48}
-              className={canGoForward() ? undefined : "text-gray-600"}
-            />
-          </button>
-        </div>
-      </div>
+      <FolderNavigation
+        onBackArrowClick={onBackArrowClick}
+        canGoBackward={canGoBackward()}
+        onForwardArrowClick={onForwardArrowClick}
+        canGoForward={canGoForward()}
+      />
 
       {pathHistory[historyPlace] === "" ? (
-        <div className="space-x-4">
-          {disks.map((disk, idx) => (
-            <DiskComponent
-              onClick={() => onDiskClick(disk.letter)}
-              disk={disk}
-              key={idx}
-            />
-          ))}
-        </div>
+        <DiskList disks={disks} onClick={onDiskClick} />
       ) : (
-        <>
-          {directoryContents.length === 0
-            ? "There are no files in this directory."
-            : ""}
-
-          {directoryContents.map((fullPath, idx) => {
-            const content = splitPath(fullPath);
-            const fileType = fullPath.includes(".") ? "File" : "Directory";
-            return (
-              <DirectoryEntity
-                type={fileType === "Directory" ? "directory" : "file"}
-                onClick={() =>
-                  fileType === "Directory"
-                    ? onDirectoryClick(content.fileName)
-                    : undefined
-                }
-                key={idx}
-                name={content.fileName}
-              />
-            );
-          })}
-        </>
+        <DirectoryContents
+          content={directoryContents}
+          onDirectoryClick={onDirectoryClick}
+        />
       )}
     </div>
   );
