@@ -1,7 +1,13 @@
 <svg
+<<<<<<< HEAD
    width="150"
    height="200"
    viewBox="110 10 750 60"
+=======
+   width="900"
+   height="60"
+   viewBox="0 0 750 60"
+>>>>>>> 8abe2d682488571f1758fddc0ed8b0327710d185
    xmlns="http://www.w3.org/2000/svg">
   <text
      x="400"
