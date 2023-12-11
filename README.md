@@ -1,8 +1,10 @@
-<div align="center" style="margin-top:1rem; margin-left:5rem; font-family: Poppins">
-    <a href="" style="display:flex; justify-content:center; height:fit-content; padding:0; text-decoration:none; margin: 0 ">
-        <img src="./frontend/src/assets/images/readme-logo.svg" width="400" style="margin: 0 0 1rem 13rem;"></img>
+<div align="center">
+    <a href="" style="display: flex; justify-content: center; text-decoration: none;">
+        <img src="./frontend/src/assets/images/readme-logo.svg" width="400" style="margin: 0 1rem 1rem 13rem;">
     </a>
-    <h3 style="font-family:Montserrat; font-weight:400; font-size:1.3rem; margin:0 0 1.5rem 0">Minimalistic Faster File Explorer</h3>
+    <h3 style="font-family: Montserrat; font-weight: 400; font-size: 1.3rem; margin: 0;">Minimalistic Faster File Explorer</h3>
+<!-- </div> -->
+
 <!-- </div> -->
 
 [![VITE Version](https://img.shields.io/badge/VITE-v3.0.7-blue?style=for-the-badge&color=red)]()
@@ -41,9 +43,10 @@ It harvests the speed of golang and is designed to be easy to use.
 This section will cover what you need to setup FileEXP locally.
 
 <h2 id="requirements">Requirements</h2>
-* Go 1.18+
-* NPM (Node 15+)
-* Wails V2
+
+- Go 1.18+
+- NPM (Node 15+)
+- Wails V2
 
 <h2 id="install">Installation</h2>
 
