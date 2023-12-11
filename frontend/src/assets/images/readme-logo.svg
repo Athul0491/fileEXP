@@ -1,13 +1,13 @@
 <svg
-   width="750"
-   height="60"
-   viewBox="0 0 750 60"
+   width="150"
+   height="200"
+   viewBox="110 10 750 60"
    xmlns="http://www.w3.org/2000/svg">
   <text
-     x="300"
+     x="400"
      y="50"
      font-family="Arial"
-     font-size="50"
+     font-size="60"
      fill="#f87810"
      font-weight="bold">
     <tspan fill="#999999">File</tspan>EXP
