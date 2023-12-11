@@ -1,19 +1,90 @@
-# README
+<div align="center" style="margin-top:1rem; margin-left:5rem; font-family: Poppins">
+    <a href="" style="display:flex; justify-content:center; height:fit-content; padding:0; text-decoration:none; margin: 0 ">
+        <img src="./frontend/src/assets/images/readme-logo.svg" width="400" style="margin: 0 0 1rem 13rem;"></img>
+    </a>
+    <h3 style="font-family:Montserrat; font-weight:400; font-size:1.3rem; margin:0 0 1.5rem 0">Minimalistic Faster File Explorer</h3>
+<!-- </div> -->
 
-## About
+[![VITE Version](https://img.shields.io/badge/VITE-v3.0.7-blue?style=for-the-badge&color=red)]()
+[![Website shields.io](https://img.shields.io/badge/version-v1-blue?style=for-the-badge)]()
+[![License: MIT](https://img.shields.io/badge/LICENSE-MIT-blue?style=for-the-badge&color=orange)]()
 
-This is the official Wails React template.
+</div>
 
-You can configure the project by editing `wails.json`. More information about the project settings can be found
-here: https://wails.io/docs/reference/project-config
+<details open="open">
+    <summary>Table of Content</summary>
+    <ol>
+        <li>
+            <a href="#about">What is this?</a>
+        </li>
+        <li><a href="#getting-started">Requirements & Installation</a></li>
+            <ul>
+                <li><a href="#requirements">Requirements</a></li>
+                <li><a href="#install">Installation</a></li>
+            </ul>
+        <li><a href="#usage">Usage</a></li>
+        <li><a href="#contributing">Contributing</a></li>
+        <li><a href="#license">License</a></li>
+    </ol>
 
-## Live Development
+</details>
+<br>
 
-To run in live development mode, run `wails dev` in the project directory. This will run a Vite development
-server that will provide very fast hot reload of your frontend changes. If you want to develop in a browser
-and have access to your Go methods, there is also a dev server that runs on http://localhost:34115. Connect
-to this in your browser, and you can call your Go code from devtools.
+<h1 id="about">What is this?</h1>
 
-## Building
+FileEXP is a lightweight and speedy file explorer designed for simplicity and efficiency. It provides a clean interface for navigating through files and directories without unnecessary clutter.
 
-To build a redistributable, production mode package, use `wails build`.
+It harvests the speed of golang and is designed to be easy to use.
+
+<h1 id="getting-started">Getting Started</h1>
+
+This section will cover what you need to setup FileEXP locally.
+
+<h2 id="requirements">Requirements</h2>
+* Go 1.18+
+* NPM (Node 15+)
+* Wails V2
+
+<h2 id="install">Installation</h2>
+
+Clone the Repository:
+
+```bash
+git clone https://github.com/Athul0491/fileEXP.git
+```
+
+Navigate to the Project Directory:
+
+```bash
+cd fileEXP
+```
+
+Run FileEXP in dev mode:
+
+```bash
+wails dev
+```
+
+> **\*Note**: if you get an error with wails, run wails doctor.\*
+
+<h1 id="usage">Usage</h1>
+
+This project is still in its early stages of development.
+
+<h2 id="contributing">Contributing</h2>
+
+Contributions are what allows projects like this one to grow. If you feel like this isn't a complete dumpster fire of a project, please consider contributing, which includes but is not limited to:
+
+- Writing a feature request / error report to this repo.
+- Starring this repo
+- Forking this repo
+- Making pull requests to this repo
+- Share this project with your friends or on social media
+- Writing me a nice email
+- Writing me a not so nice email
+
+Any contributions that you make are greatly appreciated!
+
+<h1 id="license">License</h1>
+
+This project is licensed under the MIT License, making it open and accessible for everyone.
