@@ -1,6 +1,6 @@
 <div align="center">
     <a href="" style="display: flex; justify-content: center; text-decoration: none;">
-        <img src="./frontend/src/assets/images/readme-logo.svg" width="400" style="margin: 0 1rem 1rem 13rem;">
+        <img src="./frontend/src/assets/images/readme-logo.svg" width="400" style="margin: 0 1rem 1rem 18rem;">
     </a>
     <h3 style="font-family: Montserrat; font-weight: 400; font-size: 1.3rem; margin: 0;">Minimalistic Faster File Explorer</h3>
 <!-- </div> -->
