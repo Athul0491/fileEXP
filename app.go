@@ -4,13 +4,15 @@ import (
 	"context"
 	"exPL/util"
 	"fmt"
+	"io/fs"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"sort"
 	"strconv"
-
-	// "encoding/json"
 	"strings"
+
+	"github.com/sahilm/fuzzy"
 )
 
 // type Drive struct{
@@ -98,4 +100,75 @@ func (a *App) GetDisks() ([]map[string]interface{}, error) {
 		}
 	}
 	return diskSpaces, nil
+}
+type DirectoryChild struct {
+	Name string
+}
+func (a *App) Search_Directory(query string, searchDirectory string, extension string, acceptFiles bool, acceptDirectories bool) []DirectoryChild {
+	var results []DirectoryChild
+	var fuzzyScores []fuzzy.Match
+
+	err := filepath.WalkDir(searchDirectory, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+
+		fileName := d.Name()
+
+		if d.IsDir() {
+			if !acceptDirectories {
+				return nil
+			}
+
+			matches := fuzzy.Find(query, []string{fileName})
+			fmt.Printf("Dir: %s, Query: %s, Matches: %v\n", fileName, query, matches)
+
+			if len(matches) == 0 || matches[0].Score < 40 {
+				return nil
+			}
+
+			results = append(results, DirectoryChild{Name: fileName})
+			fuzzyScores = append(fuzzyScores, matches[0])
+		} else if acceptFiles {
+			if len(extension) > 0 && !strings.HasSuffix(fileName, extension) {
+				return nil
+			}
+
+			// Remove extension from file name.
+			cleanedFilename := strings.TrimSuffix(fileName, filepath.Ext(fileName))
+			matches := fuzzy.Find(query, []string{cleanedFilename})
+			fmt.Printf("File: %s, Query: %s, Matches: %v\n", fileName, query, matches)
+
+			if len(matches) == 0 || matches[0].Score < 20 {
+				return nil
+			}
+
+			results = append(results, DirectoryChild{Name: fileName})
+			fuzzyScores = append(fuzzyScores, matches[0])
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
+
+	// Sort by fuzzy score
+	sort.Slice(fuzzyScores, func(i, j int) bool {
+		return fuzzyScores[i].Score > fuzzyScores[j].Score
+	})
+
+	// Reorder results based on sorted scores
+	for _, match := range fuzzyScores {
+		for i, result := range results {
+			if result.Name == match.Str {
+				results[i] = results[len(results)-1]
+				results = results[:len(results)-1]
+				break
+			}
+		}
+	}
+
+	return results
 }
