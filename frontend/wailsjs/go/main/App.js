@@ -17,3 +17,7 @@ export function OpenDirectory(arg1) {
 export function ProcessFile() {
   return window['go']['main']['App']['ProcessFile']();
 }
+
+export function Search_Directory(arg1, arg2, arg3, arg4, arg5) {
+  return window['go']['main']['App']['Search_Directory'](arg1, arg2, arg3, arg4, arg5);
+}

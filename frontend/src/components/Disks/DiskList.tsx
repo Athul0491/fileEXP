@@ -1,6 +1,13 @@
 import DiskComponent from "./DiskComponent";
+import { Disk } from "../../types";
+import { MouseEventHandler } from "react";
 
-export default function DiskList({ disks, onClick }) {
+interface Props {
+  disks: Disk[];
+  onClick: (letter: string) => any;
+}
+
+export default function DiskList({ disks, onClick }: Props) {
   return (
     <div className="space-x-4">
       {disks.map((disk, idx) => (

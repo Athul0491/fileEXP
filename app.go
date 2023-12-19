@@ -46,8 +46,8 @@ func (a *App) ProcessFile()(string) {
 }
 
 
-func (a *App) OpenDirectory(path string) ([]string, error){
-	var allFiles []string
+func (a *App) OpenDirectory(path string) ([]map[string]string, error){
+	var allFiles []map[string]string
 	fmt.Printf("Processing directory: %s\n", path)
 
 	// Perform operations on the current directory if needed
@@ -62,7 +62,13 @@ func (a *App) OpenDirectory(path string) ([]string, error){
 	for _, entry := range entries {
 		fullPath := filepath.Join(path, entry.Name())
 		fullPath = strings.Replace(fullPath, "\\", "/", -1)
-		allFiles = append(allFiles, fullPath)
+		temp := make(map[string]string)
+		if entry.IsDir() {
+			temp["Directory"] = fullPath
+		}else {
+			temp["File"] = fullPath
+		}
+		allFiles = append(allFiles, temp)
 
 	}
 	// jsonData, err := json.Marshal(allFiles)

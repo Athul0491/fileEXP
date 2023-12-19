@@ -1,6 +1,14 @@
+import { MouseEventHandler } from "react";
+import { DirectoryEntityType } from "../types";
 import { FaFile, FaFolder } from "react-icons/fa";
 
-export default function DirectoryEntity({ name, type, onClick }) {
+interface Props {
+  name: string;
+  type: DirectoryEntityType;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+}
+
+export default function DirectoryEntity({ name, type, onClick }: Props) {
   var icon =
     type === "file" ? (
       <FaFile size={24} color="gray" />

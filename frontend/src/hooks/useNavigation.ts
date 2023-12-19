@@ -13,10 +13,10 @@ export default function useNavigation() {
     setHistoryPlace((prevPlace) => prevPlace + 1);
   }
 
-  function canGoForward() {
+  function canGoForward(): boolean {
     return historyPlace < pathHistory.length - 1;
   }
-  function canGoBackward() {
+  function canGoBackward(): boolean {
     return historyPlace > 0;
   }
 
