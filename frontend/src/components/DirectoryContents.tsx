@@ -18,7 +18,7 @@ export function DirectoryContents({ content, onDirectoryClick, onFileClick }: Pr
         return (
           <DirectoryEntity
             type={fileType === "Directory" ? "directory" : "file"}
-            onClick={() =>
+            onDoubleClick={() =>
               fileType === "Directory"
                 ? onDirectoryClick(fileName)
                 : onFileClick(fileName)
