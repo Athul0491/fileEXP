@@ -8,6 +8,8 @@ export function Greet(arg1:string):Promise<string>;
 
 export function OpenDirectory(arg1:string):Promise<Array<{[key: string]: string}>>;
 
+export function OpenFile(arg1:string):Promise<void>;
+
 export function ProcessFile():Promise<string>;
 
 export function Search_Directory(arg1:string,arg2:string,arg3:string,arg4:boolean,arg5:boolean):Promise<Array<main.DirectoryChild>>;

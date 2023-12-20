@@ -3,10 +3,11 @@ import { DirectoryContent } from "../types";
 
 interface Props {
   content: DirectoryContent[];
-  onDirectoryClick: (fileName: string) => any;
+  onDirectoryClick: (directoryName: string) => any;
+  onFileClick: (fileName: string) => any;
 }
 
-export function DirectoryContents({ content, onDirectoryClick }: Props) {
+export function DirectoryContents({ content, onDirectoryClick, onFileClick }: Props) {
   return (
     <>
       {content.length === 0 ? "There are no files in this directory." : ""}
@@ -18,7 +19,9 @@ export function DirectoryContents({ content, onDirectoryClick }: Props) {
           <DirectoryEntity
             type={fileType === "Directory" ? "directory" : "file"}
             onClick={() =>
-              fileType === "Directory" ? onDirectoryClick(fileName) : undefined
+              fileType === "Directory"
+                ? onDirectoryClick(fileName)
+                : onFileClick(fileName)
             }
             key={idx}
             name={fileName}

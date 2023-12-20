@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { DirectoryContent, Disk } from "./types";
-import { getDisks } from "./FileExplorer";
-import { openDirectory } from "./FileExplorer";
+import { getDisks, openDirectory, openFile } from "./FileExplorer";
 import DiskList from "./components/Disks/DiskList";
 import { DirectoryContents } from "./components/DirectoryContents";
 import FolderNavigation from "./components/FolderNavigation";
@@ -17,7 +16,6 @@ function App() {
   const { pathHistory, setPathHistory, historyPlace, setHistoryPlace, onBackArrowClick, onForwardArrowClick, canGoBackward, canGoForward} = useNavigation();
 
   async function updateDirectoryContents() {
-    console.log(pathHistory[historyPlace]);
     const contents = await openDirectory(pathHistory[historyPlace]);
     setDirectoryContents(contents);
   }
@@ -28,20 +26,14 @@ function App() {
       pathHistory.push(path);
     }
     setHistoryPlace(pathHistory.length - 1);
-    // console.log(pathHistory);
     const directoryContent = await openDirectory(pathHistory[historyPlace]);
     setDirectoryContents(directoryContent);
-    // console.log(directoryContent);
-    // updateDirectoryContents();
   }
 
   async function onDirectoryClick(name: string) {
     console.log(pathHistory, "pathHistory");
     console.log(name, "name");
-    // const currentPath = pathHistory[pathHistory.length - 1];
-    // const newPath = currentPath + name + "/";
-    
-    const newPath =  name + "/";
+    const newPath = name + "/";
     pathHistory.push(newPath);
     setHistoryPlace(pathHistory.length - 1);
 
@@ -50,11 +42,9 @@ function App() {
 
   async function getDisk() {
     const disks = await getDisks();
-    // console.log(disks);
     setDisks(disks);
   }
   async function updateCurrentDirectory() {
-    // console.log(pathHistory);
     if (pathHistory[historyPlace] == "") {
       return getDisk();
     }
@@ -91,10 +81,13 @@ function App() {
         <DirectoryContents
           content={
             searchResults && searchResults.length === 0
-              ? directoryContents
+              ? directoryContents != null
+                ? directoryContents
+                : []
               : searchResults
           }
           onDirectoryClick={onDirectoryClick}
+          onFileClick={openFile}
         />
       )}
     </div>

@@ -14,6 +14,10 @@ export function OpenDirectory(arg1) {
   return window['go']['main']['App']['OpenDirectory'](arg1);
 }
 
+export function OpenFile(arg1) {
+  return window['go']['main']['App']['OpenFile'](arg1);
+}
+
 export function ProcessFile() {
   return window['go']['main']['App']['ProcessFile']();
 }

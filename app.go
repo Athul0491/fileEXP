@@ -45,6 +45,14 @@ func (a *App) ProcessFile()(string) {
 	return "greetings for wails"
 }
 
+func (a *App) OpenFile(path string)() {
+	filePath := strings.ReplaceAll(path, `\`, `/`)
+	var cmd *exec.Cmd
+	cmd = exec.Command("cmd", "/c", "start", "", filePath)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	cmd.Run()
+}
 
 func (a *App) OpenDirectory(path string) ([]map[string]string, error){
 	var allFiles []map[string]string

@@ -1,14 +1,9 @@
 import { DirectoryContent } from "./types";
 import { Disk } from "./types";
-import { OpenDirectory } from "../wailsjs/go/main/App";
-import { GetDisks } from "../wailsjs/go/main/App";
+import { OpenDirectory, OpenFile, GetDisks } from "../wailsjs/go/main/App";
 
-// Complete this after the Go function is implemented
 export async function openDirectory(path: string): Promise<DirectoryContent[]> {
   const contents = await OpenDirectory(path);
-  // console.log(contents)
-  // const content: DirectoryContent[] = contents.map
-
   return contents;
 }
 
@@ -22,4 +17,8 @@ export async function getDisks(): Promise<Disk[]> {
     total_gb: disk.total_gb,
   }));
   return Promise.resolve(ret);
+}
+
+export async function openFile(path: string): Promise<void> {
+  await OpenFile(path);
 }
