@@ -33,12 +33,9 @@ function App() {
   }
 
   async function onDirectoryClick(name: string) {
-    console.log(pathHistory, "pathHistory");
-    console.log(name, "name");
     const newPath = name + "/";
     pathHistory.push(newPath);
     setHistoryPlace(pathHistory.length - 1);
-
     updateDirectoryContents();
   }
 
@@ -46,11 +43,11 @@ function App() {
     const disks = await getDisks();
     setDisks(disks);
   }
+
   async function updateCurrentDirectory() {
     if (pathHistory[historyPlace] == "") {
       return getDisk();
     }
-
     await updateDirectoryContents();
   }
 
@@ -66,23 +63,25 @@ function App() {
     e.preventDefault();
 
     if (e.target instanceof HTMLElement && e.target.id === "directory-entity") {
-      return;
+      setContextMenuState({
+        currentContextMenu: ContextMenuType.DirectoryEntity,
+        mouseX: e.pageX,
+        mouseY: e.pageY,
+      });
     }
-
-    
+    else{
       setContextMenuState({
         currentContextMenu: ContextMenuType.General,
         mouseX: e.pageX,
         mouseY: e.pageY,
       });
-    
+    }
   }
 
   function handleCloseContextMenu(e: MouseEvent<HTMLDivElement>) {
     if (e.target instanceof HTMLElement) {
       if (document.getElementById("context-menu")?.contains(e.target)) return;
     }
-
     setContextMenuState(NO_CONTEXT_MENU);
   }
 

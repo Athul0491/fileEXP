@@ -14,7 +14,7 @@ interface Props {
 export default function ContextMenu({ options }: Props) {
   const [contextMenuState, setContextMenuState] = useAtom(contextMenuStateAtom);
   const [{ mouseX, mouseY }] = useAtom<ContextMenuState>(contextMenuStateAtom);
-    
+  console.log(contextMenuState.currentContextMenu)
   return (
     <div
       id="context-menu"
