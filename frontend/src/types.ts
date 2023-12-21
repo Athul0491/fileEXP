@@ -17,3 +17,9 @@ export enum ContextMenuType {
   General,
   DirectoryEntity,
 }
+
+export interface ContextMenuState {
+  currentContextMenu: ContextMenuType;
+  mouseX: number;
+  mouseY: number;
+}

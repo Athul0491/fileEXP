@@ -18,7 +18,8 @@ export default function DirectoryEntity({ name, type, onDoubleClick }: Props) {
   return (
     <>
       <button
-        className="bg-background hover:bg-darker cursor-pointer w-full h-8 flex"
+        className="directory-entity bg-background hover:bg-darker cursor-pointer w-full h-8 flex"
+        id="directory-entity"
         onDoubleClick={onDoubleClick}
       >
         <div className="mr-1">{icon}</div>
