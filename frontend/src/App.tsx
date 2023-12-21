@@ -5,7 +5,6 @@ import DiskList from "./components/Disks/DiskList";
 import { DirectoryContents } from "./components/DirectoryContents";
 import FolderNavigation from "./components/FolderNavigation";
 import SearchBar from "./components/SearchBar";
-import SearchFilter from "./components/SearchFilter";
 import useNavigation from "./hooks/useNavigation";
 
 function App() {
